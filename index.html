@@ -1,0 +1,2759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeTrack - Your Path to Dignified Housing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .housing-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .credit-score-circle {
+            background: conic-gradient(from 0deg, #10b981 0deg, #10b981 var(--score-angle), #e5e7eb var(--score-angle), #e5e7eb 360deg);
+        }
+        
+        /* Accessibility Styles */
+        .high-contrast {
+            filter: contrast(150%) brightness(1.2);
+        }
+        
+        .high-contrast .bg-white {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        
+        .high-contrast .text-gray-900 {
+            color: #ffffff !important;
+        }
+        
+        .high-contrast .text-gray-600 {
+            color: #cccccc !important;
+        }
+        
+        .high-contrast .border-gray-200 {
+            border-color: #ffffff !important;
+        }
+        
+        .large-text {
+            font-size: 1.25em;
+        }
+        
+        .large-text .text-sm {
+            font-size: 1rem !important;
+        }
+        
+        .large-text .text-lg {
+            font-size: 1.5rem !important;
+        }
+        
+        .large-text .text-xl {
+            font-size: 1.75rem !important;
+        }
+        
+        .large-text .text-2xl {
+            font-size: 2.25rem !important;
+        }
+        
+        .large-text .text-3xl {
+            font-size: 3rem !important;
+        }
+        
+        /* Enhanced tap targets for accessibility */
+        button, .cursor-pointer {
+            min-height: 44px;
+            min-width: 44px;
+        }
+        
+        /* Focus indicators */
+        button:focus, input:focus, select:focus {
+            outline: 3px solid #3b82f6;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="housing-gradient text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="text-2xl">🏠</div>
+                    <h1 class="text-xl font-bold">HomeTrack</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <select id="languageSelect" class="bg-white/20 text-white rounded-lg px-3 py-1 text-sm border border-white/30" aria-label="Select language">
+                        <option value="en">English</option>
+                        <option value="tw">Twi</option>
+                        <option value="ga">Ga</option>
+                        <option value="ew">Ewe</option>
+                    </select>
+                    <button id="voiceToggle" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm transition-colors" aria-label="Toggle voice assistance">
+                        🎙️ Voice
+                    </button>
+                    <button id="accessibilityToggle" class="bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm transition-colors" aria-label="Accessibility options">
+                        ♿ A11y
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Onboarding Flow -->
+    <div id="onboardingFlow" class="max-w-md mx-auto px-4 py-8">
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="text-center">
+            <div class="mb-8">
+                <div class="text-6xl mb-4">🏠</div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">Welcome to HomeTrack</h1>
+                <p class="text-lg text-gray-600 mb-8">Your path to dignified housing starts here. Build credit, save smart, and unlock housing opportunities.</p>
+            </div>
+            
+            <!-- Explainer Video -->
+            <div class="mb-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-lg font-bold">🎬 How HomeTrack Works</h3>
+                        <p class="text-sm text-blue-100">Watch our 45-second explainer</p>
+                    </div>
+                    <button onclick="playExplainerVideo()" class="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold hover:bg-blue-50 transition-colors" aria-label="Play explainer video">
+                        ▶️ Play Video
+                    </button>
+                </div>
+                <div id="videoPlayer" class="hidden bg-black rounded-lg p-4 text-center">
+                    <div class="text-6xl mb-4">🎥</div>
+                    <div class="text-white mb-4">Video: HomeTrack - Your Path to Affordable Housing</div>
+                    <div class="flex justify-center space-x-4">
+                        <button onclick="pauseVideo()" class="bg-white text-black px-3 py-1 rounded">⏸️ Pause</button>
+                        <button onclick="closeVideo()" class="bg-red-500 text-white px-3 py-1 rounded">✕ Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center space-x-3 text-left">
+                    <div class="text-2xl">🎯</div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Set Housing Goals</div>
+                        <div class="text-sm text-gray-600">Define your dream home and timeline</div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 text-left">
+                    <div class="text-2xl">📈</div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Build Credit Score</div>
+                        <div class="text-sm text-gray-600">Using MoMo, bills, and rent history</div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 text-left">
+                    <div class="text-2xl">🎫</div>
+                    <div>
+                        <div class="font-semibold text-gray-900">Redeem Vouchers</div>
+                        <div class="text-sm text-gray-600">Partner benefits for rent and savings</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-3">
+                <button onclick="startOnboarding()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 rounded-lg font-semibold text-lg transition-colors" aria-label="Start onboarding process">
+                    Get Started 🚀
+                </button>
+                <button onclick="startVoiceOnboarding()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors" aria-label="Start voice-guided onboarding">
+                    🎙️ Voice Guided Setup
+                </button>
+            </div>
+            
+            <!-- Voice Assistant Status -->
+            <div id="voiceStatus" class="hidden mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                <div class="flex items-center space-x-2">
+                    <div class="w-3 h-3 bg-green-500 rounded-full pulse-animation"></div>
+                    <span class="text-green-800 font-medium">Voice Assistant Active</span>
+                </div>
+                <div id="voicePrompt" class="text-sm text-green-700 mt-1"></div>
+            </div>
+        </div>
+
+        <!-- Profile Setup -->
+        <div id="profileSetup" class="hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Tell us about yourself</h2>
+                <p class="text-gray-600">This helps us personalize your housing journey</p>
+            </div>
+            
+            <form id="profileForm" class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                    <h3 class="font-semibold text-blue-900 mb-3">🔐 Identity Verification</h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" onclick="verifyGhanaCard()" class="flex items-center justify-center p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">
+                            <div class="text-center">
+                                <div class="text-2xl mb-1">🆔</div>
+                                <div class="text-sm font-medium text-blue-900">Ghana Card</div>
+                            </div>
+                        </button>
+                        <button type="button" onclick="verifyBiometric()" class="flex items-center justify-center p-3 bg-white border border-blue-200 rounded-lg hover:bg-blue-50 transition-colors">
+                            <div class="text-center">
+                                <div class="text-2xl mb-1">👆</div>
+                                <div class="text-sm font-medium text-blue-900">Biometric</div>
+                            </div>
+                        </button>
+                    </div>
+                    <div id="verificationStatus" class="mt-3 text-center text-sm text-gray-600">
+                        Choose verification method to continue
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input type="text" id="fullName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Kwame Asante" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                    <input type="tel" id="phoneNumber" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="0244123456" required>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Current Location</label>
+                    <select id="currentLocation" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="">Select your area</option>
+                        <option value="accra">Greater Accra</option>
+                        <option value="kumasi">Ashanti (Kumasi)</option>
+                        <option value="tamale">Northern (Tamale)</option>
+                        <option value="cape_coast">Central (Cape Coast)</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Monthly Income</label>
+                    <select id="monthlyIncome" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="">Select income range</option>
+                        <option value="under_500">Under GH₵ 500</option>
+                        <option value="500_1000">GH₵ 500 - 1,000</option>
+                        <option value="1000_2000">GH₵ 1,000 - 2,000</option>
+                        <option value="2000_5000">GH₵ 2,000 - 5,000</option>
+                        <option value="over_5000">Over GH₵ 5,000</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Primary Mobile Money Provider</label>
+                    <select id="momoProvider" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required onchange="showMoMoLink()">
+                        <option value="">Select provider</option>
+                        <option value="mtn">MTN Mobile Money</option>
+                        <option value="vodafone">Vodafone Cash</option>
+                        <option value="airteltigo">AirtelTigo Money</option>
+                    </select>
+                </div>
+
+                <div id="momoLinkSection" class="hidden bg-yellow-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-yellow-900 mb-3">📱 Link Your MoMo Wallet</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">MoMo Number</label>
+                            <input type="tel" id="momoNumber" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="0244123456">
+                        </div>
+                        <button type="button" onclick="sendMoMoOTP()" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg font-medium transition-colors">
+                            Send OTP
+                        </button>
+                        <div id="otpSection" class="hidden">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Enter OTP</label>
+                            <div class="flex space-x-2">
+                                <input type="text" id="otpCode" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" placeholder="123456" maxlength="6">
+                                <button type="button" onclick="verifyMoMoOTP()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                                    Verify
+                                </button>
+                            </div>
+                        </div>
+                        <div id="momoStatus" class="text-sm text-center"></div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <div class="flex items-start space-x-2">
+                        <div class="text-blue-600 mt-1">🔒</div>
+                        <div class="text-sm text-blue-800">
+                            <strong>Privacy First:</strong> Your data is encrypted and only used to build your credit profile. We never store your MoMo PIN or passwords.
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                    Continue →
+                </button>
+            </form>
+        </div>
+
+        <!-- Housing Goal Setup -->
+        <div id="housingGoalSetup" class="hidden">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Set Your Housing Goal</h2>
+                <p class="text-gray-600">Let's plan your path to your dream home</p>
+            </div>
+            
+            <form id="housingGoalForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Location</label>
+                    <select id="preferredLocation" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="">Where do you want to live?</option>
+                        <option value="accra_central">Accra Central</option>
+                        <option value="east_legon">East Legon</option>
+                        <option value="tema">Tema</option>
+                        <option value="kumasi_central">Kumasi Central</option>
+                        <option value="ashtown">Ashtown</option>
+                        <option value="tamale">Tamale</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Housing Type</label>
+                    <div class="grid grid-cols-1 gap-3">
+                        <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="radio" name="housingType" value="rent" class="mr-3" required>
+                            <div class="flex-1">
+                                <div class="font-medium">Traditional Rent</div>
+                                <div class="text-xs text-gray-600">Monthly payments, no equity building</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-3 border border-green-300 bg-green-50 rounded-lg cursor-pointer hover:bg-green-100">
+                            <input type="radio" name="housingType" value="rent_to_own" class="mr-3" required>
+                            <div class="flex-1">
+                                <div class="font-medium text-green-900">Rent-to-Own 🏠✨</div>
+                                <div class="text-xs text-green-700">Build equity with every payment • Recommended</div>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+                            <input type="radio" name="housingType" value="buy" class="mr-3" required>
+                            <div class="flex-1">
+                                <div class="font-medium">Direct Purchase</div>
+                                <div class="text-xs text-gray-600">Full ownership, requires large down payment</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Monthly Budget</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-2 text-gray-500">GH₵</span>
+                        <input type="number" id="monthlyBudget" class="w-full pl-12 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="500" required>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1">Recommended: 30% of your monthly income</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Timeline</label>
+                    <select id="timeline" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        <option value="">When do you want to move?</option>
+                        <option value="3_months">Within 3 months</option>
+                        <option value="6_months">Within 6 months</option>
+                        <option value="1_year">Within 1 year</option>
+                        <option value="2_years">Within 2 years</option>
+                        <option value="flexible">I'm flexible</option>
+                    </select>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <div class="flex items-start space-x-2">
+                        <div class="text-green-600 mt-1">💡</div>
+                        <div class="text-sm text-green-800">
+                            <strong>Smart Tip:</strong> Setting realistic goals increases your success rate by 70%. We'll help you adjust as you progress!
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                    Set My Goal 🎯
+                </button>
+            </form>
+        </div>
+
+        <!-- Credit Builder Intro -->
+        <div id="creditBuilderIntro" class="hidden">
+            <div class="mb-6 text-center">
+                <div class="text-4xl mb-4">📈</div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Build Your Credit Score</h2>
+                <p class="text-gray-600">We'll analyze your financial behavior to create a housing-focused credit profile</p>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-2xl">📱</div>
+                        <div>
+                            <div class="font-semibold text-gray-900">Mobile Money History</div>
+                            <div class="text-sm text-gray-600">Regular transactions show financial stability</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-2xl">💡</div>
+                        <div>
+                            <div class="font-semibold text-gray-900">ECG/GWCL Payments</div>
+                            <div class="text-sm text-gray-600">Utility bill consistency via myCreditScore</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-2xl">🏢</div>
+                        <div>
+                            <div class="font-semibold text-gray-900">SSNIT Contributions</div>
+                            <div class="text-sm text-gray-600">Employment stability indicator</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-2xl">🧠</div>
+                        <div>
+                            <div class="font-semibold text-gray-900">Psychometric Assessment</div>
+                            <div class="text-sm text-gray-600">For entrepreneurs and informal workers</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 p-4 rounded-lg mb-6">
+                <h3 class="font-semibold text-blue-900 mb-2">Your Estimated Credit Score</h3>
+                <div class="flex items-center space-x-4">
+                    <div class="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-lg">
+                        72
+                    </div>
+                    <div>
+                        <div class="text-green-700 font-semibold">Good Score</div>
+                        <div class="text-sm text-blue-700">Based on your profile information</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="connectMoMo()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors mb-3">
+                Connect Mobile Money 🔗
+            </button>
+            
+            <button onclick="skipToVouchers()" class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 py-3 rounded-lg font-semibold transition-colors">
+                Skip for Now
+            </button>
+        </div>
+
+        <!-- Voucher Introduction -->
+        <div id="voucherIntro" class="hidden">
+            <div class="mb-6 text-center">
+                <div class="text-4xl mb-4">🎫</div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Housing Vouchers Available</h2>
+                <p class="text-gray-600">Partner benefits to help with rent, savings, and down payments</p>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <div class="bg-gradient-to-r from-yellow-400 to-orange-500 p-4 rounded-lg text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-bold text-lg">MTN Housing Voucher</div>
+                            <div class="text-sm opacity-90">For loyal MoMo users</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">GH₵ 200</div>
+                            <div class="text-xs">Available</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-4 rounded-lg text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-bold text-lg">First-Time Renter Bonus</div>
+                            <div class="text-sm opacity-90">Government partnership</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">GH₵ 500</div>
+                            <div class="text-xs">Eligible</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-r from-green-500 to-teal-600 p-4 rounded-lg text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <div class="font-bold text-lg">Savings Match Program</div>
+                            <div class="text-sm opacity-90">NGO partnership</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">50%</div>
+                            <div class="text-xs">Match</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-green-50 p-4 rounded-lg mb-6">
+                <div class="flex items-start space-x-2">
+                    <div class="text-green-600 mt-1">🎉</div>
+                    <div class="text-sm text-green-800">
+                        <strong>Great News!</strong> You qualify for GH₵ 700 in housing vouchers. These can be used for rent deposits, monthly payments, or savings matching.
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="completeOnboarding()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                Complete Setup 🚀
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="mainDashboard" class="hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Welcome Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome back, <span id="userName">Kwame</span>! 👋</h1>
+            <p class="text-gray-600">You're <span id="progressPercent">23%</span> closer to your housing goal</p>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Credit Score -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Credit Score</h3>
+                    <div class="text-2xl">📈</div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-xl">
+                        <span id="creditScore">72</span>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-bold text-green-600">Good</div>
+                        <div class="text-sm text-gray-600">+5 this month</div>
+                    </div>
+                </div>
+                <button onclick="showSection('creditBuilder')" class="mt-4 w-full bg-green-50 hover:bg-green-100 text-green-700 py-2 rounded-lg transition-colors">
+                    Improve Score
+                </button>
+            </div>
+
+            <!-- Equity Tracker -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Home Equity</h3>
+                    <div class="text-2xl">🏠</div>
+                </div>
+                <div class="text-center mb-4">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center text-white font-bold text-xl mb-2">
+                        22%
+                    </div>
+                    <div class="text-sm text-gray-600">You own 22% of your home</div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Total Paid</span>
+                        <span class="font-medium text-green-600">GH₵ 3,300</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Property Value</span>
+                        <span class="font-medium">GH₵ 15,000</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Next Milestone</span>
+                        <span class="font-medium text-blue-600">50% by Month 18</span>
+                    </div>
+                </div>
+                <button onclick="showSection('housingGoal')" class="mt-4 w-full bg-green-50 hover:bg-green-100 text-green-700 py-2 rounded-lg transition-colors">
+                    Track Equity
+                </button>
+            </div>
+
+            <!-- Voucher Balance -->
+            <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Voucher Balance</h3>
+                    <div class="text-2xl">🎫</div>
+                </div>
+                <div class="text-3xl font-bold text-purple-600 mb-2">GH₵ 700</div>
+                <div class="text-sm text-gray-600 mb-4">3 vouchers available</div>
+                <button onclick="showSection('vouchers')" class="w-full bg-purple-50 hover:bg-purple-100 text-purple-700 py-2 rounded-lg transition-colors">
+                    Redeem Vouchers
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h3>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <button onclick="addSavings()" class="flex flex-col items-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                    <div class="text-2xl mb-2">💰</div>
+                    <span class="text-sm font-medium text-blue-700">Add Savings</span>
+                </button>
+                <button onclick="updateGoal()" class="flex flex-col items-center p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
+                    <div class="text-2xl mb-2">🎯</div>
+                    <span class="text-sm font-medium text-green-700">Update Goal</span>
+                </button>
+                <button onclick="findHousing()" class="flex flex-col items-center p-4 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors">
+                    <div class="text-2xl mb-2">🏠</div>
+                    <span class="text-sm font-medium text-orange-700">Find Housing</span>
+                </button>
+                <button onclick="showDiasporaPortal()" class="flex flex-col items-center p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
+                    <div class="text-2xl mb-2">🌍</div>
+                    <span class="text-sm font-medium text-purple-700">Diaspora Help</span>
+                </button>
+                <button onclick="getSupport()" class="flex flex-col items-center p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                    <div class="text-2xl mb-2">🤝</div>
+                    <span class="text-sm font-medium text-gray-700">Get Support</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Diaspora Investment Alert -->
+        <div id="diasporaAlert" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold mb-2">🌍 Family Abroad Can Help!</h3>
+                    <p class="text-purple-100">Connect with diaspora relatives to co-invest in your housing goal</p>
+                </div>
+                <button onclick="showDiasporaPortal()" class="bg-white text-purple-600 px-6 py-2 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
+                    Learn More
+                </button>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+            <h3 class="text-xl font-semibold text-gray-900 mb-6">Recent Activity</h3>
+            <div class="space-y-4" id="recentActivity">
+                <!-- Activity items will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Views -->
+    <!-- Credit Builder Section -->
+    <div id="creditBuilderSection" class="hidden max-w-4xl mx-auto px-4 py-8">
+        <div class="mb-8">
+            <button onclick="showDashboard()" class="text-blue-600 hover:text-blue-700 mb-4">← Back to Dashboard</button>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Credit Builder</h2>
+            <p class="text-lg text-gray-600">Build your housing credit score with alternative data</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Credit Score Display -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Your Credit Profile</h3>
+                
+                <div class="text-center mb-6">
+                    <div class="w-32 h-32 mx-auto rounded-full bg-green-500 flex items-center justify-center text-white font-bold text-3xl mb-4">
+                        72
+                    </div>
+                    <div class="text-2xl font-bold text-green-600 mb-2">Good Score</div>
+                    <div class="text-gray-600">Housing Credit Rating</div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Payment History</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-20 bg-gray-200 rounded-full h-2">
+                                <div class="bg-green-500 h-2 rounded-full" style="width: 85%"></div>
+                            </div>
+                            <span class="text-sm text-green-600">85%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Financial Stability</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-20 bg-gray-200 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 70%"></div>
+                            </div>
+                            <span class="text-sm text-blue-600">70%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Housing Readiness</span>
+                        <div class="flex items-center space-x-2">
+                            <div class="w-20 bg-gray-200 rounded-full h-2">
+                                <div class="bg-purple-500 h-2 rounded-full" style="width: 60%"></div>
+                            </div>
+                            <span class="text-sm text-purple-600">60%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Improvement Tips -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Boost Your Score</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+                            <div class="text-green-600 mt-1">✅</div>
+                            <div>
+                                <div class="font-medium text-green-900">Connect Utility Bills</div>
+                                <div class="text-sm text-green-700">+15 points potential</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                            <div class="text-blue-600 mt-1">📱</div>
+                            <div>
+                                <div class="font-medium text-blue-900">Verify MoMo Transactions</div>
+                                <div class="text-sm text-blue-700">+10 points potential</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg">
+                            <div class="text-orange-600 mt-1">🏠</div>
+                            <div>
+                                <div class="font-medium text-orange-900">Add Rent History</div>
+                                <div class="text-sm text-orange-700">+20 points potential</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="connectData()" class="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                        Connect Data Sources
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Housing Goal Section -->
+    <div id="housingGoalSection" class="hidden max-w-4xl mx-auto px-4 py-8">
+        <div class="mb-8">
+            <button onclick="showDashboard()" class="text-blue-600 hover:text-blue-700 mb-4">← Back to Dashboard</button>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Housing Goal Tracker</h2>
+            <p class="text-lg text-gray-600">Track your progress toward your dream home</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Goal Progress -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">Your Goal</h3>
+                
+                <div class="mb-6">
+                    <div class="text-2xl font-bold text-gray-900 mb-2">Rent in Tema</div>
+                    <div class="text-gray-600">GH₵ 500/month • 6 months timeline</div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="flex justify-between text-sm text-gray-600 mb-2">
+                        <span>Overall Progress</span>
+                        <span>23%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div class="bg-blue-600 h-4 rounded-full progress-bar" style="width: 23%"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="text-center p-3 bg-green-50 rounded-lg">
+                        <div class="text-2xl font-bold text-green-600">GH₵ 350</div>
+                        <div class="text-sm text-green-700">Saved</div>
+                    </div>
+                    <div class="text-center p-3 bg-blue-50 rounded-lg">
+                        <div class="text-2xl font-bold text-blue-600">GH₵ 1,150</div>
+                        <div class="text-sm text-blue-700">Still Needed</div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center text-sm">
+                        <span>Credit Score Target</span>
+                        <span class="text-green-600 font-medium">✓ Achieved</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span>Savings Target</span>
+                        <span class="text-orange-600 font-medium">23% Complete</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span>Documentation</span>
+                        <span class="text-blue-600 font-medium">In Progress</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Plan -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Next Steps</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                            <div class="text-blue-600 mt-1">1️⃣</div>
+                            <div>
+                                <div class="font-medium text-blue-900">Save GH₵ 192/month</div>
+                                <div class="text-sm text-blue-700">To reach your 6-month goal</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+                            <div class="text-green-600 mt-1">2️⃣</div>
+                            <div>
+                                <div class="font-medium text-green-900">Research Tema Properties</div>
+                                <div class="text-sm text-green-700">Start viewing options in your budget</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-3 p-3 bg-purple-50 rounded-lg">
+                            <div class="text-purple-600 mt-1">3️⃣</div>
+                            <div>
+                                <div class="font-medium text-purple-900">Use Housing Vouchers</div>
+                                <div class="text-sm text-purple-700">GH₵ 700 available to reduce costs</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="findHousing()" class="w-full mt-6 bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors">
+                        Find Properties
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diaspora Portal Section -->
+    <div id="diasporaSection" class="hidden max-w-4xl mx-auto px-4 py-8">
+        <div class="mb-8">
+            <button onclick="showDashboard()" class="text-blue-600 hover:text-blue-700 mb-4">← Back to Dashboard</button>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">🌍 Diaspora Investment Portal</h2>
+            <p class="text-lg text-gray-600">Connect with family abroad to co-invest in your housing journey</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- How It Works -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">How Diaspora Investment Works</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                        <div>
+                            <div class="font-medium text-gray-900">Share Your Goal</div>
+                            <div class="text-sm text-gray-600">Send your housing goal to family members abroad</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-green-100 text-green-600 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                        <div>
+                            <div class="font-medium text-gray-900">They Co-Invest</div>
+                            <div class="text-sm text-gray-600">Family contributes via international transfer or crypto</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-purple-100 text-purple-600 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                        <div>
+                            <div class="font-medium text-gray-900">Shared Ownership</div>
+                            <div class="text-sm text-gray-600">Both parties build equity in the property</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-orange-100 text-orange-600 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">4</div>
+                        <div>
+                            <div class="font-medium text-gray-900">Flexible Returns</div>
+                            <div class="text-sm text-gray-600">Gift equity, receive dividends, or sell shares later</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span class="text-blue-600">🔒</span>
+                        <span class="font-semibold text-blue-900">Secure & Transparent</span>
+                    </div>
+                    <p class="text-sm text-blue-800">All investments are legally documented with clear ownership percentages and exit terms.</p>
+                </div>
+            </div>
+
+            <!-- Investment Options -->
+            <div class="space-y-6">
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Investment Options</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-semibold text-gray-900">🎁 Gift Investment</h4>
+                                <span class="text-sm text-green-600 font-medium">Most Popular</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3">Family member gifts money with no expectation of return</p>
+                            <div class="text-sm text-gray-500">• No repayment required • Full equity to you • Tax benefits for donor</div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">🤝 Co-Investment</h4>
+                            <p class="text-sm text-gray-600 mb-3">Shared ownership with proportional equity split</p>
+                            <div class="text-sm text-gray-500">• Shared equity • Shared appreciation • Flexible exit terms</div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4">
+                            <h4 class="font-semibold text-gray-900 mb-2">💰 Investment Loan</h4>
+                            <p class="text-sm text-gray-600 mb-3">Low-interest family loan with flexible repayment</p>
+                            <div class="text-sm text-gray-500">• Below-market rates • Family-friendly terms • Build credit history</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-xl p-6">
+                    <h4 class="font-bold text-lg mb-2">🇬🇭 + 🇺🇸 Success Story</h4>
+                    <p class="text-sm text-green-100 mb-4">"My sister in New York helped me buy my first home in Accra. Now we both benefit from the property appreciation!"</p>
+                    <div class="text-xs text-green-200">- Ama K., Accra</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <button onclick="inviteDiaspora()" class="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-semibold text-lg transition-colors">
+                Invite Family to Co-Invest 🌍
+            </button>
+        </div>
+    </div>
+
+    <!-- Vouchers Section -->
+    <div id="vouchersSection" class="hidden max-w-4xl mx-auto px-4 py-8">
+        <div class="mb-8">
+            <button onclick="showDashboard()" class="text-blue-600 hover:text-blue-700 mb-4">← Back to Dashboard</button>
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Housing Vouchers</h2>
+            <p class="text-lg text-gray-600">Redeem partner benefits for rent, savings, and down payments</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Available Vouchers -->
+            <div class="space-y-6">
+                <div class="bg-gradient-to-r from-yellow-400 to-orange-500 p-6 rounded-xl text-white">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold">MTN Housing Voucher</h3>
+                            <p class="text-sm opacity-90">For loyal MoMo users</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">GH₵ 200</div>
+                            <div class="text-xs">Available</div>
+                        </div>
+                    </div>
+                    <div class="text-sm mb-4">
+                        Valid for: Rent deposits, monthly payments
+                    </div>
+                    <button onclick="redeemVoucher('mtn')" class="bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        Redeem Now
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 rounded-xl text-white">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold">First-Time Renter Bonus</h3>
+                            <p class="text-sm opacity-90">Government partnership</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">GH₵ 500</div>
+                            <div class="text-xs">Eligible</div>
+                        </div>
+                    </div>
+                    <div class="text-sm mb-4">
+                        Valid for: Security deposits, first month rent
+                    </div>
+                    <button onclick="redeemVoucher('government')" class="bg-white text-purple-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        Claim Bonus
+                    </button>
+                </div>
+
+                <div class="bg-gradient-to-r from-green-500 to-teal-600 p-6 rounded-xl text-white">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-xl font-bold">Savings Match Program</h3>
+                            <p class="text-sm opacity-90">NGO partnership</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold">50%</div>
+                            <div class="text-xs">Match Rate</div>
+                        </div>
+                    </div>
+                    <div class="text-sm mb-4">
+                        We'll match 50% of your housing savings up to GH₵ 300
+                    </div>
+                    <button onclick="redeemVoucher('savings')" class="bg-white text-teal-600 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        Start Matching
+                    </button>
+                </div>
+            </div>
+
+            <!-- Voucher Usage -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-semibold text-gray-900 mb-6">How to Use Vouchers</h3>
+                
+                <div class="space-y-4 mb-6">
+                    <div class="flex items-start space-x-3">
+                        <div class="text-blue-600 mt-1">1️⃣</div>
+                        <div>
+                            <div class="font-medium text-gray-900">Select a Voucher</div>
+                            <div class="text-sm text-gray-600">Choose from available partner vouchers</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="text-blue-600 mt-1">2️⃣</div>
+                        <div>
+                            <div class="font-medium text-gray-900">Verify Usage</div>
+                            <div class="text-sm text-gray-600">Confirm it's for approved housing expenses</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start space-x-3">
+                        <div class="text-blue-600 mt-1">3️⃣</div>
+                        <div>
+                            <div class="font-medium text-gray-900">Get Instant Credit</div>
+                            <div class="text-sm text-gray-600">Funds applied directly to your housing goal</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-lg mb-6">
+                    <h4 class="font-semibold text-green-900 mb-2">💡 Smart Tip</h4>
+                    <p class="text-sm text-green-800">Combine vouchers strategically! Use the government bonus for deposits and MTN voucher for monthly payments.</p>
+                </div>
+
+                <div class="border-t pt-4">
+                    <h4 class="font-semibold text-gray-900 mb-3">Voucher History</h4>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Total Redeemed</span>
+                            <span class="font-medium">GH₵ 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Available Balance</span>
+                            <span class="font-medium text-green-600">GH₵ 700</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accessibility Modal -->
+    <div id="accessibilityModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-6 max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-900">♿ Accessibility Options</h3>
+                <button onclick="closeAccessibilityModal()" class="text-gray-500 hover:text-gray-700" aria-label="Close accessibility options">✕</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <label class="text-gray-700">High Contrast Mode</label>
+                    <button id="contrastToggle" onclick="toggleHighContrast()" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition-colors" aria-label="Toggle high contrast mode">
+                        Enable
+                    </button>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="text-gray-700">Large Text</label>
+                    <button id="textSizeToggle" onclick="toggleLargeText()" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition-colors" aria-label="Toggle large text">
+                        Enable
+                    </button>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="text-gray-700">Voice Navigation</label>
+                    <button id="voiceNavToggle" onclick="toggleVoiceNavigation()" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition-colors" aria-label="Toggle voice navigation">
+                        Enable
+                    </button>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="text-gray-700">Offline Mode</label>
+                    <button id="offlineToggle" onclick="toggleOfflineMode()" class="bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition-colors" aria-label="Toggle offline mode">
+                        Enable
+                    </button>
+                </div>
+            </div>
+            
+            <div class="mt-6 p-3 bg-blue-50 rounded-lg">
+                <p class="text-sm text-blue-800">
+                    <strong>Need help?</strong> Call our accessibility support line: 
+                    <a href="tel:+233123456789" class="underline">+233 123 456 789</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let currentStep = 'welcome';
+        let userProfile = {};
+        let housingGoal = {};
+        let creditScore = 72;
+        let voucherBalance = 700;
+        let currentLanguage = 'en';
+        let voiceEnabled = false;
+        let voiceAssistantActive = false;
+        let highContrastMode = false;
+        let largeTextMode = false;
+        let offlineMode = false;
+        let speechSynthesis = window.speechSynthesis;
+        let speechRecognition = null;
+
+        // Developer Specs - API Configuration
+        const API_CONFIG = {
+            baseURL: 'https://api.hometrack.gh/v1',
+            endpoints: {
+                auth: '/auth',
+                profile: '/user/profile',
+                credit: '/credit',
+                vouchers: '/vouchers',
+                housing: '/housing',
+                momo: '/integrations/momo',
+                notifications: '/notifications'
+            },
+            headers: {
+                'Content-Type': 'application/json',
+                'X-API-Version': '1.0',
+                'X-Client': 'hometrack-web'
+            }
+        };
+
+        // Security & Encryption
+        class SecurityManager {
+            static generateSessionToken() {
+                return 'ht_' + Math.random().toString(36).substr(2, 16) + Date.now().toString(36);
+            }
+
+            static encryptSensitiveData(data) {
+                // In production: Use proper encryption (AES-256)
+                return btoa(JSON.stringify(data));
+            }
+
+            static decryptSensitiveData(encryptedData) {
+                try {
+                    return JSON.parse(atob(encryptedData));
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            static validateGhanaCard(cardNumber) {
+                // Ghana Card validation pattern: GHA-XXXXXXXXX-X
+                const pattern = /^GHA-\d{9}-\d$/;
+                return pattern.test(cardNumber);
+            }
+
+            static validateMoMoNumber(number) {
+                // Ghana MoMo number validation
+                const patterns = {
+                    mtn: /^0(24|25|53|54|55|59)\d{7}$/,
+                    vodafone: /^0(20|50)\d{7}$/,
+                    airteltigo: /^0(27|57|26|56)\d{7}$/
+                };
+                return Object.values(patterns).some(pattern => pattern.test(number));
+            }
+        }
+
+        // API Service Layer
+        class APIService {
+            static async request(endpoint, options = {}) {
+                const url = API_CONFIG.baseURL + endpoint;
+                const config = {
+                    headers: {
+                        ...API_CONFIG.headers,
+                        'Authorization': `Bearer ${localStorage.getItem('ht_token') || 'demo_token'}`
+                    },
+                    ...options
+                };
+
+                try {
+                    // Simulate API calls in demo mode
+                    console.log(`API Call: ${options.method || 'GET'} ${url}`, config.body);
+                    
+                    // Simulate network delay
+                    await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 1000));
+                    
+                    // Return mock responses based on endpoint
+                    return this.getMockResponse(endpoint, options);
+                } catch (error) {
+                    console.error('API Error:', error);
+                    throw new Error('Network error. Please check your connection.');
+                }
+            }
+
+            static getMockResponse(endpoint, options) {
+                const responses = {
+                    '/auth/login': { token: SecurityManager.generateSessionToken(), user_id: 'usr_' + Date.now() },
+                    '/user/profile': { 
+                        success: true, 
+                        profile: userProfile,
+                        credit_score: creditScore,
+                        onboarding_complete: currentStep === 'complete'
+                    },
+                    '/credit/score': { 
+                        score: creditScore, 
+                        factors: {
+                            payment_history: 85,
+                            financial_stability: 70,
+                            housing_readiness: 60
+                        },
+                        last_updated: new Date().toISOString()
+                    },
+                    '/vouchers/available': [
+                        { id: 'v1', partner: 'MTN', amount: 200, type: 'housing', expires: '2024-12-31' },
+                        { id: 'v2', partner: 'Government', amount: 500, type: 'first_time', expires: '2024-12-31' },
+                        { id: 'v3', partner: 'NGO', amount: 300, type: 'savings_match', expires: '2024-12-31' }
+                    ],
+                    '/housing/goals': { 
+                        goal: housingGoal, 
+                        progress: 23,
+                        milestones: [
+                            { name: 'Credit Score Target', completed: true },
+                            { name: 'Savings Target', completed: false, progress: 23 },
+                            { name: 'Documentation', completed: false, progress: 60 }
+                        ]
+                    }
+                };
+
+                return responses[endpoint] || { success: true, data: {} };
+            }
+
+            // User Management
+            static async createUser(profileData) {
+                const encryptedData = SecurityManager.encryptSensitiveData(profileData);
+                return this.request('/user/profile', {
+                    method: 'POST',
+                    body: JSON.stringify({ profile: encryptedData })
+                });
+            }
+
+            static async updateProfile(updates) {
+                return this.request('/user/profile', {
+                    method: 'PATCH',
+                    body: JSON.stringify(updates)
+                });
+            }
+
+            // Credit Score Management
+            static async getCreditScore() {
+                return this.request('/credit/score');
+            }
+
+            static async linkMoMoAccount(momoData) {
+                const encryptedMomo = SecurityManager.encryptSensitiveData(momoData);
+                return this.request('/integrations/momo/link', {
+                    method: 'POST',
+                    body: JSON.stringify({ momo_data: encryptedMomo })
+                });
+            }
+
+            static async refreshCreditScore() {
+                return this.request('/credit/refresh', { method: 'POST' });
+            }
+
+            // Housing Goals
+            static async setHousingGoal(goalData) {
+                return this.request('/housing/goals', {
+                    method: 'POST',
+                    body: JSON.stringify(goalData)
+                });
+            }
+
+            static async getHousingProgress() {
+                return this.request('/housing/goals');
+            }
+
+            // Voucher Management
+            static async getAvailableVouchers() {
+                return this.request('/vouchers/available');
+            }
+
+            static async redeemVoucher(voucherId, pin) {
+                return this.request('/vouchers/redeem', {
+                    method: 'POST',
+                    body: JSON.stringify({ voucher_id: voucherId, pin: pin })
+                });
+            }
+
+            // Notifications
+            static async getNotifications() {
+                return this.request('/notifications');
+            }
+
+            static async markNotificationRead(notificationId) {
+                return this.request(`/notifications/${notificationId}/read`, { method: 'POST' });
+            }
+        }
+
+        // Real-time Data Manager
+        class DataManager {
+            static init() {
+                // Simulate WebSocket connection for real-time updates
+                this.setupRealTimeUpdates();
+                this.startPeriodicSync();
+            }
+
+            static setupRealTimeUpdates() {
+                // In production: WebSocket connection
+                console.log('Setting up real-time data connection...');
+                
+                // Simulate real-time credit score updates
+                setInterval(() => {
+                    if (Math.random() < 0.1) { // 10% chance every 30 seconds
+                        this.handleCreditScoreUpdate();
+                    }
+                }, 30000);
+
+                // Simulate voucher notifications
+                setInterval(() => {
+                    if (Math.random() < 0.05) { // 5% chance every minute
+                        this.handleNewVoucher();
+                    }
+                }, 60000);
+            }
+
+            static startPeriodicSync() {
+                // Sync data every 5 minutes
+                setInterval(async () => {
+                    try {
+                        await this.syncUserData();
+                    } catch (error) {
+                        console.error('Sync failed:', error);
+                    }
+                }, 300000);
+            }
+
+            static async syncUserData() {
+                console.log('Syncing user data...');
+                
+                try {
+                    const [profile, credit, vouchers, housing] = await Promise.all([
+                        APIService.request('/user/profile'),
+                        APIService.getCreditScore(),
+                        APIService.getAvailableVouchers(),
+                        APIService.getHousingProgress()
+                    ]);
+
+                    // Update UI with fresh data
+                    this.updateDashboard({ profile, credit, vouchers, housing });
+                    
+                } catch (error) {
+                    console.error('Data sync error:', error);
+                    showNotification('Unable to sync data. Working offline.', 'warning');
+                }
+            }
+
+            static handleCreditScoreUpdate() {
+                const oldScore = creditScore;
+                creditScore = Math.min(850, creditScore + Math.floor(Math.random() * 5) + 1);
+                
+                if (creditScore > oldScore) {
+                    showNotification(`🎉 Credit score improved! Now ${creditScore} (+${creditScore - oldScore})`, 'success');
+                    this.updateCreditScoreDisplay();
+                }
+            }
+
+            static handleNewVoucher() {
+                const vouchers = [
+                    { partner: 'MTN', amount: 50, type: 'bonus' },
+                    { partner: 'Vodafone', amount: 100, type: 'loyalty' },
+                    { partner: 'ECG', amount: 75, type: 'bill_pay' }
+                ];
+                
+                const newVoucher = vouchers[Math.floor(Math.random() * vouchers.length)];
+                voucherBalance += newVoucher.amount;
+                
+                showNotification(`🎫 New voucher! GH₵ ${newVoucher.amount} from ${newVoucher.partner}`, 'success');
+                this.updateVoucherDisplay();
+            }
+
+            static updateDashboard(data) {
+                // Update credit score
+                if (data.credit && data.credit.score) {
+                    creditScore = data.credit.score;
+                    this.updateCreditScoreDisplay();
+                }
+
+                // Update housing progress
+                if (data.housing && data.housing.progress) {
+                    document.getElementById('progressPercent').textContent = data.housing.progress + '%';
+                }
+
+                // Update voucher balance
+                if (data.vouchers) {
+                    const totalBalance = data.vouchers.reduce((sum, v) => sum + v.amount, 0);
+                    voucherBalance = totalBalance;
+                    this.updateVoucherDisplay();
+                }
+            }
+
+            static updateCreditScoreDisplay() {
+                const scoreElements = document.querySelectorAll('#creditScore, .credit-score-display');
+                scoreElements.forEach(el => {
+                    if (el) el.textContent = creditScore;
+                });
+            }
+
+            static updateVoucherDisplay() {
+                const voucherElements = document.querySelectorAll('.voucher-balance');
+                voucherElements.forEach(el => {
+                    if (el) el.textContent = `GH₵ ${voucherBalance}`;
+                });
+            }
+        }
+
+        // Enhanced Form Validation
+        class FormValidator {
+            static validateProfile(formData) {
+                const errors = [];
+
+                if (!formData.fullName || formData.fullName.length < 2) {
+                    errors.push('Full name must be at least 2 characters');
+                }
+
+                if (!SecurityManager.validateMoMoNumber(formData.phoneNumber)) {
+                    errors.push('Please enter a valid Ghana mobile number');
+                }
+
+                if (!formData.currentLocation) {
+                    errors.push('Please select your current location');
+                }
+
+                if (!formData.monthlyIncome) {
+                    errors.push('Please select your income range');
+                }
+
+                return errors;
+            }
+
+            static validateHousingGoal(goalData) {
+                const errors = [];
+
+                if (!goalData.preferredLocation) {
+                    errors.push('Please select your preferred location');
+                }
+
+                if (!goalData.housingType) {
+                    errors.push('Please select a housing type');
+                }
+
+                if (!goalData.monthlyBudget || goalData.monthlyBudget < 100) {
+                    errors.push('Monthly budget must be at least GH₵ 100');
+                }
+
+                if (!goalData.timeline) {
+                    errors.push('Please select your timeline');
+                }
+
+                return errors;
+            }
+        }
+
+        // Progress Calculator
+        class ProgressCalculator {
+            static calculateHousingProgress(profile, goal, savings = 0, creditScore = 0) {
+                let progress = 0;
+
+                // Credit score component (40% weight)
+                if (creditScore >= 700) progress += 40;
+                else if (creditScore >= 600) progress += 30;
+                else if (creditScore >= 500) progress += 20;
+                else progress += 10;
+
+                // Savings component (40% weight)
+                const targetSavings = goal.monthlyBudget * 3; // 3 months deposit
+                const savingsProgress = Math.min(savings / targetSavings, 1) * 40;
+                progress += savingsProgress;
+
+                // Documentation component (20% weight)
+                let docProgress = 0;
+                if (profile.ghanaCardVerified) docProgress += 10;
+                if (profile.momoLinked) docProgress += 10;
+                progress += docProgress;
+
+                return Math.min(Math.round(progress), 100);
+            }
+
+            static getNextMilestone(currentProgress) {
+                const milestones = [
+                    { threshold: 25, title: 'Profile Complete', reward: 'GH₵ 50 bonus' },
+                    { threshold: 50, title: 'Credit Building', reward: 'Premium features unlocked' },
+                    { threshold: 75, title: 'Housing Ready', reward: 'Priority property matching' },
+                    { threshold: 100, title: 'Goal Achieved', reward: 'Special recognition' }
+                ];
+
+                return milestones.find(m => m.threshold > currentProgress) || milestones[milestones.length - 1];
+            }
+        }
+
+        // Notification System
+        class NotificationManager {
+            static init() {
+                this.notifications = [];
+                this.unreadCount = 0;
+                this.setupNotificationUI();
+            }
+
+            static setupNotificationUI() {
+                // Add notification bell to navigation
+                const nav = document.querySelector('nav .flex.items-center.space-x-4');
+                if (nav) {
+                    const bellHTML = `
+                        <button id="notificationBell" onclick="NotificationManager.toggleNotifications()" 
+                                class="relative bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm transition-colors"
+                                aria-label="View notifications">
+                            🔔 
+                            <span id="notificationBadge" class="hidden absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                0
+                            </span>
+                        </button>
+                    `;
+                    nav.insertAdjacentHTML('beforeend', bellHTML);
+                }
+            }
+
+            static addNotification(notification) {
+                notification.id = 'notif_' + Date.now();
+                notification.timestamp = new Date();
+                notification.read = false;
+
+                this.notifications.unshift(notification);
+                this.unreadCount++;
+                this.updateBadge();
+
+                // Show toast for important notifications
+                if (notification.priority === 'high') {
+                    showNotification(notification.message, notification.type || 'info');
+                }
+            }
+
+            static updateBadge() {
+                const badge = document.getElementById('notificationBadge');
+                if (badge) {
+                    if (this.unreadCount > 0) {
+                        badge.textContent = this.unreadCount;
+                        badge.classList.remove('hidden');
+                    } else {
+                        badge.classList.add('hidden');
+                    }
+                }
+            }
+
+            static toggleNotifications() {
+                // Create or toggle notification panel
+                let panel = document.getElementById('notificationPanel');
+                
+                if (!panel) {
+                    panel = this.createNotificationPanel();
+                    document.body.appendChild(panel);
+                } else {
+                    panel.classList.toggle('hidden');
+                }
+            }
+
+            static createNotificationPanel() {
+                const panel = document.createElement('div');
+                panel.id = 'notificationPanel';
+                panel.className = 'fixed top-16 right-4 w-80 bg-white rounded-xl shadow-2xl border z-50 max-h-96 overflow-hidden';
+                
+                panel.innerHTML = `
+                    <div class="p-4 border-b bg-gray-50">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-semibold text-gray-900">Notifications</h3>
+                            <button onclick="NotificationManager.markAllRead()" class="text-sm text-blue-600 hover:text-blue-700">
+                                Mark all read
+                            </button>
+                        </div>
+                    </div>
+                    <div id="notificationList" class="max-h-80 overflow-y-auto">
+                        ${this.renderNotifications()}
+                    </div>
+                `;
+
+                return panel;
+            }
+
+            static renderNotifications() {
+                if (this.notifications.length === 0) {
+                    return '<div class="p-4 text-center text-gray-500">No notifications yet</div>';
+                }
+
+                return this.notifications.map(notif => `
+                    <div class="p-4 border-b hover:bg-gray-50 ${notif.read ? 'opacity-60' : ''}" 
+                         onclick="NotificationManager.markRead('${notif.id}')">
+                        <div class="flex items-start space-x-3">
+                            <div class="text-lg">${notif.icon || '📢'}</div>
+                            <div class="flex-1">
+                                <div class="font-medium text-gray-900">${notif.title}</div>
+                                <div class="text-sm text-gray-600">${notif.message}</div>
+                                <div class="text-xs text-gray-400 mt-1">
+                                    ${this.formatTime(notif.timestamp)}
+                                </div>
+                            </div>
+                            ${!notif.read ? '<div class="w-2 h-2 bg-blue-500 rounded-full"></div>' : ''}
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            static markRead(notificationId) {
+                const notif = this.notifications.find(n => n.id === notificationId);
+                if (notif && !notif.read) {
+                    notif.read = true;
+                    this.unreadCount--;
+                    this.updateBadge();
+                    this.refreshPanel();
+                }
+            }
+
+            static markAllRead() {
+                this.notifications.forEach(n => n.read = true);
+                this.unreadCount = 0;
+                this.updateBadge();
+                this.refreshPanel();
+            }
+
+            static refreshPanel() {
+                const list = document.getElementById('notificationList');
+                if (list) {
+                    list.innerHTML = this.renderNotifications();
+                }
+            }
+
+            static formatTime(timestamp) {
+                const now = new Date();
+                const diff = now - timestamp;
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(minutes / 60);
+                const days = Math.floor(hours / 24);
+
+                if (days > 0) return `${days}d ago`;
+                if (hours > 0) return `${hours}h ago`;
+                if (minutes > 0) return `${minutes}m ago`;
+                return 'Just now';
+            }
+        }
+
+        // Initialize systems when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            DataManager.init();
+            NotificationManager.init();
+            
+            // Load initial data
+            loadAvailableVouchers();
+            
+            // Add some sample notifications
+            setTimeout(() => {
+                NotificationManager.addNotification({
+                    title: 'Welcome to HomeTrack!',
+                    message: 'Complete your profile to unlock all features',
+                    icon: '🏠',
+                    type: 'info',
+                    priority: 'medium'
+                });
+            }, 2000);
+            
+            // Initialize Ghana Data Protection Act compliance
+            initializeDataProtectionCompliance();
+        });
+
+        // Ghana Data Protection Act Compliance
+        function initializeDataProtectionCompliance() {
+            // Ensure user consent for data processing
+            const consent = localStorage.getItem('ht_data_consent');
+            if (!consent) {
+                setTimeout(() => {
+                    const userConsent = confirm(
+                        'HomeTrack processes your personal data to provide housing finance services. ' +
+                        'We comply with the Ghana Data Protection Act 2012. ' +
+                        'Your data is encrypted and never shared without consent. ' +
+                        'Do you agree to our data processing terms?'
+                    );
+                    
+                    if (userConsent) {
+                        localStorage.setItem('ht_data_consent', 'granted');
+                        localStorage.setItem('ht_consent_date', new Date().toISOString());
+                        showNotification('Data processing consent granted. Your privacy is protected. 🔒', 'success');
+                    } else {
+                        showNotification('Data consent required to use HomeTrack services.', 'warning');
+                    }
+                }, 3000);
+            }
+        }
+
+        /*
+        DEVELOPER INTEGRATION NOTES:
+        
+        🔧 API ENDPOINTS TO IMPLEMENT:
+        
+        1. Authentication & User Management:
+           POST /auth/login - User authentication
+           POST /user/profile - Create user profile
+           PATCH /user/profile - Update user profile
+           GET /user/profile - Get user profile
+        
+        2. Credit Score Management:
+           GET /credit/score - Get current credit score
+           POST /credit/refresh - Trigger credit score recalculation
+           POST /integrations/momo/link - Link MoMo account
+           POST /integrations/momo/send-otp - Send MoMo OTP
+        
+        3. Housing Goals:
+           POST /housing/goals - Set housing goal
+           GET /housing/goals - Get housing progress
+           PATCH /housing/goals - Update housing goal
+        
+        4. Voucher Management:
+           GET /vouchers/available - Get available vouchers
+           POST /vouchers/redeem - Redeem voucher (requires PIN)
+           GET /vouchers/history - Get redemption history
+        
+        5. Notifications:
+           GET /notifications - Get user notifications
+           POST /notifications/{id}/read - Mark notification as read
+        
+        🔐 SECURITY REQUIREMENTS:
+        
+        1. Data Encryption:
+           - Use AES-256 for sensitive data (MoMo numbers, Ghana Card)
+           - Implement proper key management
+           - Hash PINs with bcrypt (min 12 rounds)
+        
+        2. API Security:
+           - JWT tokens with 24-hour expiry
+           - Rate limiting (100 requests/minute per user)
+           - Input validation and sanitization
+           - HTTPS only in production
+        
+        3. Ghana Data Protection Act Compliance:
+           - Explicit user consent for data processing
+           - Data minimization (collect only necessary data)
+           - Right to data portability and deletion
+           - Audit logs for all data access
+        
+        4. MoMo Integration Security:
+           - OTP verification for account linking
+           - PIN verification for voucher redemption
+           - Transaction encryption in transit
+           - Partner API authentication (OAuth 2.0)
+        
+        📊 DATABASE SCHEMA SUGGESTIONS:
+        
+        1. Users Table:
+           - user_id (UUID, primary key)
+           - full_name (encrypted)
+           - phone_number (encrypted)
+           - ghana_card_number (encrypted)
+           - location, income_range, momo_provider
+           - verification_status, created_at, updated_at
+        
+        2. Housing Goals Table:
+           - goal_id (UUID, primary key)
+           - user_id (foreign key)
+           - preferred_location, housing_type
+           - monthly_budget, timeline
+           - progress_percentage, created_at, updated_at
+        
+        3. Credit Scores Table:
+           - score_id (UUID, primary key)
+           - user_id (foreign key)
+           - score_value, payment_history, financial_stability
+           - data_sources (JSON), calculated_at
+        
+        4. Vouchers Table:
+           - voucher_id (UUID, primary key)
+           - user_id (foreign key)
+           - partner_name, amount, voucher_type
+           - status, redeemed_at, expires_at
+        
+        5. Audit Logs Table:
+           - log_id (UUID, primary key)
+           - user_id, action_type, resource_id
+           - ip_address, user_agent, timestamp
+        
+        🚀 DEPLOYMENT CONSIDERATIONS:
+        
+        1. Infrastructure:
+           - Use HTTPS/TLS 1.3 minimum
+           - Deploy on Ghana-based servers for data residency
+           - Implement CDN for static assets
+           - Database encryption at rest
+        
+        2. Monitoring:
+           - Real-time error tracking
+           - Performance monitoring (API response times)
+           - Security event logging
+           - User activity analytics (anonymized)
+        
+        3. Backup & Recovery:
+           - Daily encrypted database backups
+           - Cross-region backup replication
+           - Disaster recovery procedures
+           - Data retention policies (7 years for financial data)
+        
+        📱 MOBILE APP INTEGRATION:
+        
+        1. API Compatibility:
+           - RESTful API design
+           - JSON response format
+           - Proper HTTP status codes
+           - API versioning support
+        
+        2. Offline Support:
+           - Local data caching
+           - Sync when connection restored
+           - Offline-first architecture
+           - Progressive Web App (PWA) features
+        
+        🤝 PARTNER INTEGRATIONS:
+        
+        1. MTN Mobile Money:
+           - MTN MoMo API for transaction history
+           - Webhook notifications for real-time updates
+           - OAuth 2.0 authentication
+        
+        2. Ghana Card System:
+           - National ID verification API
+           - Biometric verification integration
+           - Real-time identity validation
+        
+        3. Credit Bureau Integration:
+           - myCreditScore API integration
+           - SSNIT contribution verification
+           - Utility payment history (ECG, GWCL)
+        
+        4. Property Partners:
+           - Real estate listing APIs
+           - Property valuation services
+           - Rental agreement templates
+        */
+
+        // Voice Assistant Scripts
+        const voiceScripts = {
+            en: {
+                welcome: "Hello! Welcome to HomeTrack. I'm here to help you find affordable housing, build your credit, and unlock rewards. Ready to begin? Just say 'Let's go' or tap the button.",
+                housingGoal: "Let's set your housing goal. First, where would you like to live? You can say a city or a neighborhood. Next, what's your budget? You can speak an amount. Finally, when do you want to move? Say a month or a date.",
+                creditBuilder: "We use your mobile money and utility payments to help build your credit score. No bank account needed. Your current score is 72. Want to learn how to improve it? Say 'Show me tips.'",
+                voucher: "Great news! You've unlocked a GH₵ 700 housing voucher from our partners. You can use it for rent or savings. Say 'Redeem now' or 'Save for later.'",
+                dashboard: "Here's your dashboard. You can check your credit score, track your housing goal, and see your voucher balance. Say 'Show credit score,' 'Track goal,' or 'View voucher.'"
+            },
+            tw: {
+                welcome: "Akwaaba! Wo ba HomeTrack so. Me wɔ ha sɛ meboa wo anya ofi a wo tumi tua ka, si wo credit, na wonya akatua. Wo asiesie wo ho sɛ wo fi ase? Ka 'Momma yen nkɔ' anaasɛ mia button no.",
+                housingGoal: "Momma yen nsi wo ofi botae. Nea edi kan no, ɛhe na wo pɛ sɛ wo te? Wo tumi ka kuropɔn bi anaasɛ mpɔtam bi. Afei, wo sika dodow yɛ ahe? Wo tumi ka sika bi. Awiei koraa, bere bɛn na wo pɛ sɛ wo kɔ? Ka bosome bi anaasɛ da bi.",
+                creditBuilder: "Yɛde wo mobile money ne wo utility bills di dwuma de boa wo si wo credit score. Wonhia bank account biara. Wo credit score mprempren yɛ 72. Wo pɛ sɛ wo sua sɛnea wo bɛtumi ama ayɛ yiye? Ka 'Kyerɛ me akwan.'",
+                voucher: "Amane pa! Wo anya GH₵ 700 ofi voucher fi yen partners hɔ. Wo tumi de di dwuma ma ofi ka anaasɛ sieka. Ka 'Gye mprempren' anaasɛ 'Sie ma akyiri.'",
+                dashboard: "Wo dashboard ni. Wo tumi hwɛ wo credit score, di wo ofi botae akyi, na wo ahwɛ wo voucher sika. Ka 'Kyerɛ credit score,' 'Di botae akyi,' anaasɛ 'Hwɛ voucher.'"
+            },
+            ga: {
+                welcome: "Akɛɛ! Wo ba HomeTrack gbɛ. Mi lɛ afii sɛ mi kpɛ wɔ nya ofi fɛɛ, si wɔ credit, kɛ nya rewards. Wɔ ready sɛ wɔ bɛɛ? Ka 'Eni yɛ lɔ' kɛ tap button lɛ.",
+                housingGoal: "Eni yɛ si wɔ ofi goal. Naa, afii wɔ pɛ sɛ wɔ te? Wɔ lɛ ka kɛ city kɛ neighborhood. Afɛi, wɔ sika yɛ ahe? Wɔ lɛ ka sika amount. Awɛi, gbɛ bɛn wɔ pɛ sɛ wɔ kɔ? Ka bosome kɛ date.",
+                creditBuilder: "Yɛ de wɔ mobile money kɛ utility payments di dwuma kpɛ wɔ si credit score. Wɔ mli bank account. Wɔ score mli yɛ 72. Wɔ pɛ sɛ wɔ sua sɛnea wɔ bɛ improve? Ka 'Kyerɛ mi tips.'",
+                voucher: "Amane fɛɛ! Wɔ nya GH₵ 700 housing voucher fi partners gbɛ. Wɔ lɛ de di dwuma ma rent kɛ savings. Ka 'Redeem joɔ' kɛ 'Save ma later.'",
+                dashboard: "Wɔ dashboard lɛ ni. Wɔ lɛ check wɔ credit score, track wɔ housing goal, kɛ see wɔ voucher balance. Ka 'Show credit score,' 'Track goal,' kɛ 'View voucher.'"
+            },
+            ew: {
+                welcome: "Woezɔ! Ɖe HomeTrack dzi. Mele afii be makpe wò nàkpɔ aƒe si nàte ŋu axe fe ga, atu wò credit, eye nàkpɔ teƒeɖoɖo. Èdzra ɖo be yeadze egɔmea? Gblɔ 'Mina míayi' alo zi button la dzi.",
+                housingGoal: "Mina míaɖo wò aƒe taɖodzinu. Gbã la, afi ka nèdi be yeanɔ? Àte ŋu agblɔ du alo nutome aɖe. Emegbe, wò ga home gbɔ? Àte ŋu agblɔ ga home aɖe. Mlɔeba la, ɣeyiɣi ka nèdi be yeayi? Gblɔ ɣleti alo ŋkeke aɖe.",
+                creditBuilder: "Míezãa wò mobile money kple utility payments tsoa kpena ɖe wò credit score tutu ŋu. Màhiã bank account o. Wò score fifia nye 72. Èdi be yeafia wò ale si nàte ŋu awɔe nyuiea? Gblɔ 'Fia aɖaŋu siwo nam.'",
+                voucher: "Nya nyui! Èkpɔ GH₵ 700 aƒe voucher tso míaƒe partners gbɔ. Àte ŋu azã na aƒexexlẽ alo dzadzraɖo. Gblɔ 'Xɔe fifia' alo 'Dzrae ɖi na emegbe.'",
+                dashboard: "Wò dashboard enye esi. Àte ŋu akpɔ wò credit score, akpɔ wò aƒe taɖodzinu yome, eye nàkpɔ wò voucher home. Gblɔ 'Fia credit score,' 'Kpɔ taɖodzinu yome,' alo 'Kpɔ voucher.'"
+            }
+        };
+
+        // Language translations
+        const translations = {
+            tw: {
+                'Get Started': 'Fi Ase',
+                'Voice Guided Setup': 'Nne Akwankyerɛ Setup',
+                'Welcome back': 'Akwaaba bio',
+                'Credit Score': 'Credit Score',
+                'Home Equity': 'Ofi Equity',
+                'Voucher Balance': 'Voucher Sika'
+            },
+            ga: {
+                'Get Started': 'Bɛɛ',
+                'Voice Guided Setup': 'Nɔŋ Akwankyerɛ Setup',
+                'Welcome back': 'Akɛɛ bio',
+                'Credit Score': 'Credit Score',
+                'Home Equity': 'Ofi Equity',
+                'Voucher Balance': 'Voucher Sika'
+            },
+            ew: {
+                'Get Started': 'Dze Egɔme',
+                'Voice Guided Setup': 'Gbe Fifia Setup',
+                'Welcome back': 'Woezɔ ake',
+                'Credit Score': 'Credit Score',
+                'Home Equity': 'Aƒe Equity',
+                'Voucher Balance': 'Voucher Home'
+            }
+        };
+
+        // Voice Assistant Functions
+        function speak(text, lang = currentLanguage) {
+            if (!speechSynthesis) return;
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang === 'tw' ? 'ak-GH' : lang === 'ga' ? 'gaa-GH' : lang === 'ew' ? 'ee-GH' : 'en-GH';
+            utterance.rate = 0.8;
+            utterance.pitch = 1;
+            speechSynthesis.speak(utterance);
+        }
+
+        function startVoiceOnboarding() {
+            voiceAssistantActive = true;
+            document.getElementById('voiceStatus').classList.remove('hidden');
+            document.getElementById('voicePrompt').textContent = 'Listening for your response...';
+            
+            const script = voiceScripts[currentLanguage].welcome;
+            speak(script);
+            
+            setTimeout(() => {
+                startOnboarding();
+            }, 3000);
+        }
+
+        function playExplainerVideo() {
+            document.getElementById('videoPlayer').classList.remove('hidden');
+            
+            // Simulate video with voice narration
+            const videoScript = "Meet HomeTrack—your companion for affordable housing in Ghana. Start by setting your housing goal. Where do you want to live? What can you afford? We help you build credit using everyday payments—no paperwork, no stress. Unlock housing vouchers from partners like MTN and reduce your rent or save for the future. Track your journey, earn rewards, and move closer to your dream home.";
+            
+            speak(videoScript);
+            showNotification('🎬 Playing explainer video with audio narration', 'info');
+        }
+
+        function pauseVideo() {
+            speechSynthesis.cancel();
+            showNotification('Video paused', 'info');
+        }
+
+        function closeVideo() {
+            speechSynthesis.cancel();
+            document.getElementById('videoPlayer').classList.add('hidden');
+        }
+
+        // Accessibility Functions
+        function openAccessibilityModal() {
+            document.getElementById('accessibilityModal').classList.remove('hidden');
+        }
+
+        function closeAccessibilityModal() {
+            document.getElementById('accessibilityModal').classList.add('hidden');
+        }
+
+        function toggleHighContrast() {
+            highContrastMode = !highContrastMode;
+            const button = document.getElementById('contrastToggle');
+            
+            if (highContrastMode) {
+                document.body.classList.add('high-contrast');
+                button.textContent = 'Disable';
+                button.className = 'bg-blue-600 text-white px-3 py-1 rounded-lg text-sm transition-colors';
+                showNotification('High contrast mode enabled', 'success');
+            } else {
+                document.body.classList.remove('high-contrast');
+                button.textContent = 'Enable';
+                button.className = 'bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition-colors';
+                showNotification('High contrast mode disabled', 'info');
+            }
+        }
+
+        function toggleLargeText() {
+            largeTextMode = !largeTextMode;
+            const button = document.getElementById('textSizeToggle');
+            
+            if (largeTextMode) {
+                document.body.classList.add('large-text');
+                button.textContent = 'Disable';
+                button.className = 'bg-blue-600 text-white px-3 py-1 rounded-lg text-sm transition-colors';
+                showNotification('Large text mode enabled', 'success');
+            } else {
+                document.body.classList.remove('large-text');
+                button.textContent = 'Enable';
+                button.className = 'bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition-colors';
+                showNotification('Large text mode disabled', 'info');
+            }
+        }
+
+        function toggleVoiceNavigation() {
+            voiceEnabled = !voiceEnabled;
+            const button = document.getElementById('voiceNavToggle');
+            
+            if (voiceEnabled) {
+                button.textContent = 'Disable';
+                button.className = 'bg-blue-600 text-white px-3 py-1 rounded-lg text-sm transition-colors';
+                showNotification('Voice navigation enabled', 'success');
+                speak('Voice navigation is now active. You can speak commands to navigate.');
+            } else {
+                button.textContent = 'Enable';
+                button.className = 'bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition-colors';
+                showNotification('Voice navigation disabled', 'info');
+            }
+        }
+
+        function toggleOfflineMode() {
+            offlineMode = !offlineMode;
+            const button = document.getElementById('offlineToggle');
+            
+            if (offlineMode) {
+                button.textContent = 'Disable';
+                button.className = 'bg-blue-600 text-white px-3 py-1 rounded-lg text-sm transition-colors';
+                showNotification('Offline mode enabled - Basic features available without internet', 'success');
+            } else {
+                button.textContent = 'Enable';
+                button.className = 'bg-gray-200 hover:bg-gray-300 px-3 py-1 rounded-lg text-sm transition-colors';
+                showNotification('Offline mode disabled', 'info');
+            }
+        }
+
+        // Onboarding functions
+        function startOnboarding() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('profileSetup').classList.remove('hidden');
+            currentStep = 'profile';
+            
+            if (voiceAssistantActive) {
+                setTimeout(() => {
+                    speak('Now let\'s set up your profile. Please fill in your information or speak your answers.');
+                }, 1000);
+            }
+        }
+
+        function skipToVouchers() {
+            document.getElementById('creditBuilderIntro').classList.add('hidden');
+            document.getElementById('voucherIntro').classList.remove('hidden');
+            currentStep = 'vouchers';
+        }
+
+        function connectMoMo() {
+            showNotification('Connecting to Mobile Money... This may take a moment.', 'info');
+            
+            setTimeout(() => {
+                showNotification('Mobile Money connected successfully! Your credit score has been updated.', 'success');
+                creditScore = 78;
+                document.getElementById('creditBuilderIntro').classList.add('hidden');
+                document.getElementById('voucherIntro').classList.remove('hidden');
+                currentStep = 'vouchers';
+            }, 2000);
+        }
+
+        function completeOnboarding() {
+            document.getElementById('onboardingFlow').classList.add('hidden');
+            document.getElementById('mainDashboard').classList.remove('hidden');
+            
+            // Update dashboard with user data
+            if (userProfile.fullName) {
+                document.getElementById('userName').textContent = userProfile.fullName.split(' ')[0];
+            }
+            
+            populateRecentActivity();
+            showNotification('Welcome to HomeTrack! Your housing journey starts now. 🏠', 'success');
+        }
+
+        // Enhanced Form Handlers with API Integration
+        document.addEventListener('DOMContentLoaded', function() {
+            // Profile form handler with validation and API integration
+            const profileForm = document.getElementById('profileForm');
+            if (profileForm) {
+                profileForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = {
+                        fullName: document.getElementById('fullName').value,
+                        phoneNumber: document.getElementById('phoneNumber').value,
+                        currentLocation: document.getElementById('currentLocation').value,
+                        monthlyIncome: document.getElementById('monthlyIncome').value,
+                        momoProvider: document.getElementById('momoProvider').value
+                    };
+                    
+                    // Validate form data
+                    const errors = FormValidator.validateProfile(formData);
+                    if (errors.length > 0) {
+                        showNotification('Please fix the following errors: ' + errors.join(', '), 'error');
+                        return;
+                    }
+                    
+                    try {
+                        showNotification('Creating your profile...', 'info');
+                        
+                        // Save to API
+                        const response = await APIService.createUser(formData);
+                        
+                        if (response.success) {
+                            userProfile = formData;
+                            userProfile.ghanaCardVerified = false;
+                            userProfile.momoLinked = false;
+                            
+                            // Store session token
+                            localStorage.setItem('ht_token', response.token || SecurityManager.generateSessionToken());
+                            
+                            showNotification('Profile created successfully! 🎉', 'success');
+                            
+                            // Add notification
+                            NotificationManager.addNotification({
+                                title: 'Profile Created',
+                                message: 'Your HomeTrack profile is now active',
+                                icon: '✅',
+                                type: 'success',
+                                priority: 'medium'
+                            });
+                            
+                            document.getElementById('profileSetup').classList.add('hidden');
+                            document.getElementById('housingGoalSetup').classList.remove('hidden');
+                            currentStep = 'housing_goal';
+                        }
+                    } catch (error) {
+                        showNotification('Failed to create profile: ' + error.message, 'error');
+                    }
+                });
+            }
+
+            // Housing goal form handler with progress calculation
+            const housingGoalForm = document.getElementById('housingGoalForm');
+            if (housingGoalForm) {
+                housingGoalForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const goalData = {
+                        preferredLocation: document.getElementById('preferredLocation').value,
+                        housingType: document.querySelector('input[name="housingType"]:checked').value,
+                        monthlyBudget: parseInt(document.getElementById('monthlyBudget').value),
+                        timeline: document.getElementById('timeline').value
+                    };
+                    
+                    // Validate goal data
+                    const errors = FormValidator.validateHousingGoal(goalData);
+                    if (errors.length > 0) {
+                        showNotification('Please fix the following errors: ' + errors.join(', '), 'error');
+                        return;
+                    }
+                    
+                    try {
+                        showNotification('Setting your housing goal...', 'info');
+                        
+                        // Save to API
+                        const response = await APIService.setHousingGoal(goalData);
+                        
+                        if (response.success) {
+                            housingGoal = goalData;
+                            
+                            // Calculate initial progress
+                            const progress = ProgressCalculator.calculateHousingProgress(
+                                userProfile, 
+                                housingGoal, 
+                                0, 
+                                creditScore
+                            );
+                            
+                            showNotification(`Housing goal set! You're ${progress}% ready. 🏠`, 'success');
+                            
+                            // Add notification with next milestone
+                            const nextMilestone = ProgressCalculator.getNextMilestone(progress);
+                            NotificationManager.addNotification({
+                                title: 'Housing Goal Set',
+                                message: `Next milestone: ${nextMilestone.title} (${nextMilestone.reward})`,
+                                icon: '🎯',
+                                type: 'info',
+                                priority: 'medium'
+                            });
+                            
+                            document.getElementById('housingGoalSetup').classList.add('hidden');
+                            document.getElementById('creditBuilderIntro').classList.remove('hidden');
+                            currentStep = 'credit_builder';
+                        }
+                    } catch (error) {
+                        showNotification('Failed to set housing goal: ' + error.message, 'error');
+                    }
+                });
+            }
+        });
+
+        // Enhanced Verification Functions with API Integration
+        async function verifyGhanaCard() {
+            const statusDiv = document.getElementById('verificationStatus');
+            statusDiv.innerHTML = '<div class="text-blue-600">📱 Connecting to National ID database...</div>';
+            
+            try {
+                // Simulate Ghana Card API integration
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // In production: Integrate with Ghana Card API
+                const cardNumber = prompt('Enter your Ghana Card number (GHA-XXXXXXXXX-X):');
+                
+                if (cardNumber && SecurityManager.validateGhanaCard(cardNumber)) {
+                    userProfile.ghanaCardVerified = true;
+                    userProfile.ghanaCardNumber = SecurityManager.encryptSensitiveData(cardNumber);
+                    
+                    statusDiv.innerHTML = '<div class="text-green-600">✅ Ghana Card verified successfully!</div>';
+                    showNotification('Identity verified via Ghana Card! 🆔', 'success');
+                    
+                    // Update credit score
+                    creditScore += 5;
+                    DataManager.updateCreditScoreDisplay();
+                    
+                    NotificationManager.addNotification({
+                        title: 'Identity Verified',
+                        message: 'Ghana Card verification complete (+5 credit points)',
+                        icon: '🆔',
+                        type: 'success',
+                        priority: 'medium'
+                    });
+                } else {
+                    statusDiv.innerHTML = '<div class="text-red-600">❌ Invalid Ghana Card number format</div>';
+                    showNotification('Please enter a valid Ghana Card number', 'error');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="text-red-600">❌ Verification failed. Please try again.</div>';
+                showNotification('Verification failed: ' + error.message, 'error');
+            }
+        }
+
+        async function verifyBiometric() {
+            const statusDiv = document.getElementById('verificationStatus');
+            statusDiv.innerHTML = '<div class="text-blue-600">👆 Please place finger on sensor...</div>';
+            
+            try {
+                // Simulate biometric verification
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                // In production: Integrate with biometric hardware/API
+                const biometricSuccess = Math.random() > 0.1; // 90% success rate
+                
+                if (biometricSuccess) {
+                    userProfile.biometricVerified = true;
+                    
+                    statusDiv.innerHTML = '<div class="text-green-600">✅ Biometric verification complete!</div>';
+                    showNotification('Identity verified via biometric scan! 👆', 'success');
+                    
+                    // Update credit score
+                    creditScore += 10;
+                    DataManager.updateCreditScoreDisplay();
+                    
+                    NotificationManager.addNotification({
+                        title: 'Biometric Verified',
+                        message: 'Fingerprint verification complete (+10 credit points)',
+                        icon: '👆',
+                        type: 'success',
+                        priority: 'medium'
+                    });
+                } else {
+                    statusDiv.innerHTML = '<div class="text-red-600">❌ Biometric verification failed. Please try again.</div>';
+                    showNotification('Biometric verification failed. Please try again.', 'error');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = '<div class="text-red-600">❌ Verification failed. Please try again.</div>';
+                showNotification('Verification failed: ' + error.message, 'error');
+            }
+        }
+
+        function showMoMoLink() {
+            const provider = document.getElementById('momoProvider').value;
+            if (provider) {
+                document.getElementById('momoLinkSection').classList.remove('hidden');
+                
+                // Pre-fill MoMo number if phone number is already entered
+                const phoneNumber = document.getElementById('phoneNumber').value;
+                if (phoneNumber && SecurityManager.validateMoMoNumber(phoneNumber)) {
+                    document.getElementById('momoNumber').value = phoneNumber;
+                }
+            }
+        }
+
+        async function sendMoMoOTP() {
+            const momoNumber = document.getElementById('momoNumber').value;
+            const provider = document.getElementById('momoProvider').value;
+            
+            if (!momoNumber) {
+                showNotification('Please enter your MoMo number first', 'warning');
+                return;
+            }
+            
+            if (!SecurityManager.validateMoMoNumber(momoNumber)) {
+                showNotification('Please enter a valid Ghana mobile number', 'error');
+                return;
+            }
+            
+            try {
+                document.getElementById('momoStatus').innerHTML = '<div class="text-blue-600">Sending OTP to ' + momoNumber + '...</div>';
+                
+                // Simulate MoMo API integration
+                const otpResponse = await APIService.request('/integrations/momo/send-otp', {
+                    method: 'POST',
+                    body: JSON.stringify({ 
+                        phone: momoNumber, 
+                        provider: provider 
+                    })
+                });
+                
+                if (otpResponse.success) {
+                    document.getElementById('otpSection').classList.remove('hidden');
+                    document.getElementById('momoStatus').innerHTML = '<div class="text-green-600">OTP sent! Check your phone.</div>';
+                    
+                    // Store OTP session for verification
+                    sessionStorage.setItem('momo_otp_session', JSON.stringify({
+                        phone: momoNumber,
+                        provider: provider,
+                        timestamp: Date.now()
+                    }));
+                } else {
+                    throw new Error('Failed to send OTP');
+                }
+            } catch (error) {
+                document.getElementById('momoStatus').innerHTML = '<div class="text-red-600">❌ Failed to send OTP. Please try again.</div>';
+                showNotification('Failed to send OTP: ' + error.message, 'error');
+            }
+        }
+
+        async function verifyMoMoOTP() {
+            const otpCode = document.getElementById('otpCode').value;
+            const session = JSON.parse(sessionStorage.getItem('momo_otp_session') || '{}');
+            
+            if (!otpCode || otpCode.length !== 6) {
+                showNotification('Please enter the 6-digit OTP code', 'warning');
+                return;
+            }
+            
+            if (!session.phone) {
+                showNotification('OTP session expired. Please request a new OTP.', 'error');
+                return;
+            }
+            
+            try {
+                document.getElementById('momoStatus').innerHTML = '<div class="text-blue-600">Verifying OTP...</div>';
+                
+                // Verify OTP with API
+                const verifyResponse = await APIService.linkMoMoAccount({
+                    phone: session.phone,
+                    provider: session.provider,
+                    otp: otpCode
+                });
+                
+                if (verifyResponse.success) {
+                    userProfile.momoLinked = true;
+                    userProfile.momoProvider = session.provider;
+                    userProfile.momoNumber = SecurityManager.encryptSensitiveData(session.phone);
+                    
+                    document.getElementById('momoStatus').innerHTML = '<div class="text-green-600">✅ MoMo wallet linked successfully!</div>';
+                    showNotification('Mobile Money wallet connected! Transaction history will be analyzed for credit scoring.', 'success');
+                    
+                    // Update credit score significantly
+                    creditScore += 15;
+                    DataManager.updateCreditScoreDisplay();
+                    
+                    NotificationManager.addNotification({
+                        title: 'MoMo Wallet Linked',
+                        message: 'Transaction history analysis will improve your credit score',
+                        icon: '📱',
+                        type: 'success',
+                        priority: 'high'
+                    });
+                    
+                    // Clear session
+                    sessionStorage.removeItem('momo_otp_session');
+                    
+                    // Start credit score analysis
+                    setTimeout(() => {
+                        showNotification('Analyzing transaction history... This may take a few minutes.', 'info');
+                    }, 2000);
+                    
+                } else {
+                    throw new Error('Invalid OTP code');
+                }
+            } catch (error) {
+                document.getElementById('momoStatus').innerHTML = '<div class="text-red-600">❌ Invalid OTP. Please try again.</div>';
+                showNotification('OTP verification failed: ' + error.message, 'error');
+            }
+        }
+
+        // Navigation functions
+        function showDashboard() {
+            // Hide all sections
+            const sections = ['creditBuilderSection', 'housingGoalSection', 'vouchersSection', 'diasporaSection'];
+            sections.forEach(section => {
+                document.getElementById(section).classList.add('hidden');
+            });
+            
+            document.getElementById('mainDashboard').classList.remove('hidden');
+        }
+
+        function showSection(sectionName) {
+            document.getElementById('mainDashboard').classList.add('hidden');
+            
+            const sections = ['creditBuilderSection', 'housingGoalSection', 'vouchersSection', 'diasporaSection'];
+            sections.forEach(section => {
+                document.getElementById(section).classList.add('hidden');
+            });
+            
+            document.getElementById(sectionName + 'Section').classList.remove('hidden');
+        }
+
+        function showDiasporaPortal() {
+            showSection('diaspora');
+        }
+
+        // Dashboard functions
+        function addSavings() {
+            const amount = prompt('How much would you like to add to your housing savings? (GH₵)');
+            if (amount && !isNaN(amount) && amount > 0) {
+                showNotification(`GH₵ ${amount} added to your housing savings! 💰`, 'success');
+                // Update progress calculation
+                updateProgress();
+            }
+        }
+
+        function updateGoal() {
+            showNotification('Opening goal editor... You can adjust your timeline, budget, or location.', 'info');
+            showSection('housingGoal');
+        }
+
+        function findHousing() {
+            showNotification('Searching for properties in your area and budget... 🏠', 'info');
+            
+            setTimeout(() => {
+                showNotification('Found 12 properties matching your criteria! Check your notifications for details.', 'success');
+            }, 2000);
+        }
+
+        function getSupport() {
+            showNotification('Connecting you to housing counselors and community support... 🤝', 'info');
+            
+            setTimeout(() => {
+                showNotification('Support request submitted! A housing counselor will contact you within 24 hours.', 'success');
+            }, 1500);
+        }
+
+        function connectData() {
+            showNotification('Opening secure data connection portal... 🔗', 'info');
+            
+            setTimeout(() => {
+                showNotification('Data sources connected! Your credit score will update within 24 hours.', 'success');
+            }, 2000);
+        }
+
+        // Enhanced Voucher Redemption with Security
+        async function redeemVoucher(type) {
+            const vouchers = {
+                mtn: { id: 'v1', name: 'MTN Housing Voucher', amount: 200, requiresPin: true },
+                government: { id: 'v2', name: 'First-Time Renter Bonus', amount: 500, requiresPin: true },
+                savings: { id: 'v3', name: 'Savings Match Program', amount: 'Match', requiresPin: false }
+            };
+            
+            const voucher = vouchers[type];
+            if (!voucher) {
+                showNotification('Invalid voucher type', 'error');
+                return;
+            }
+            
+            try {
+                let pin = null;
+                
+                // Request PIN for security if required
+                if (voucher.requiresPin) {
+                    pin = prompt('Enter your 4-digit PIN to redeem this voucher:');
+                    if (!pin || pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+                        showNotification('Please enter a valid 4-digit PIN', 'error');
+                        return;
+                    }
+                }
+                
+                showNotification('Processing voucher redemption...', 'info');
+                
+                // Call API to redeem voucher
+                const response = await APIService.redeemVoucher(voucher.id, pin);
+                
+                if (response.success) {
+                    if (type === 'savings') {
+                        showNotification('Savings matching activated! We\'ll match 50% of your deposits up to GH₵ 300.', 'success');
+                        
+                        NotificationManager.addNotification({
+                            title: 'Savings Match Active',
+                            message: '50% matching on housing deposits up to GH₵ 300',
+                            icon: '💰',
+                            type: 'success',
+                            priority: 'high'
+                        });
+                    } else {
+                        voucherBalance -= voucher.amount;
+                        DataManager.updateVoucherDisplay();
+                        
+                        showNotification(`${voucher.name} redeemed! GH₵ ${voucher.amount} applied to your housing goal.`, 'success');
+                        
+                        NotificationManager.addNotification({
+                            title: 'Voucher Redeemed',
+                            message: `GH₵ ${voucher.amount} from ${voucher.name} applied to your account`,
+                            icon: '🎫',
+                            type: 'success',
+                            priority: 'high'
+                        });
+                        
+                        // Update housing progress
+                        updateProgress();
+                    }
+                    
+                    // Log redemption for audit trail
+                    console.log('Voucher Redemption:', {
+                        voucher_id: voucher.id,
+                        amount: voucher.amount,
+                        timestamp: new Date().toISOString(),
+                        user_id: localStorage.getItem('ht_token')
+                    });
+                    
+                } else {
+                    throw new Error(response.error || 'Redemption failed');
+                }
+                
+            } catch (error) {
+                showNotification('Voucher redemption failed: ' + error.message, 'error');
+                
+                // Log failed attempt for security monitoring
+                console.warn('Failed voucher redemption attempt:', {
+                    voucher_type: type,
+                    error: error.message,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        }
+
+        // Enhanced voucher management functions
+        async function loadAvailableVouchers() {
+            try {
+                const vouchers = await APIService.getAvailableVouchers();
+                updateVoucherDisplay(vouchers);
+            } catch (error) {
+                console.error('Failed to load vouchers:', error);
+            }
+        }
+
+        function updateVoucherDisplay(vouchers) {
+            if (vouchers && Array.isArray(vouchers)) {
+                const totalBalance = vouchers.reduce((sum, v) => sum + (typeof v.amount === 'number' ? v.amount : 0), 0);
+                voucherBalance = totalBalance;
+                
+                // Update voucher balance displays
+                const voucherElements = document.querySelectorAll('.voucher-balance');
+                voucherElements.forEach(el => {
+                    if (el) el.textContent = `GH₵ ${voucherBalance}`;
+                });
+                
+                // Update voucher count
+                const countElements = document.querySelectorAll('.voucher-count');
+                countElements.forEach(el => {
+                    if (el) el.textContent = `${vouchers.length} vouchers available`;
+                });
+            }
+        }
+
+        function inviteDiaspora() {
+            showNotification('Opening diaspora invitation portal... 🌍', 'info');
+            
+            setTimeout(() => {
+                const email = prompt('Enter your family member\'s email address:');
+                if (email) {
+                    showNotification(`Invitation sent to ${email}! They'll receive details about co-investing in your housing goal.`, 'success');
+                    
+                    // Add to recent activity
+                    const container = document.getElementById('recentActivity');
+                    const newActivity = document.createElement('div');
+                    newActivity.className = 'flex items-center space-x-3 p-3 rounded-lg border bg-purple-50 border-purple-200';
+                    newActivity.innerHTML = `
+                        <div class="text-2xl">🌍</div>
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-900">Diaspora invitation sent</div>
+                            <div class="text-sm text-gray-600">Just now</div>
+                        </div>
+                    `;
+                    container.insertBefore(newActivity, container.firstChild);
+                }
+            }, 1000);
+        }
+
+        function populateRecentActivity() {
+            const activities = [
+                { icon: '📈', text: 'Credit score improved by 5 points', time: '2 hours ago', type: 'success' },
+                { icon: '💰', text: 'Added GH₵ 100 to housing savings', time: '1 day ago', type: 'info' },
+                { icon: '🎫', text: 'MTN Housing Voucher available', time: '2 days ago', type: 'warning' },
+                { icon: '🏠', text: 'New properties match your criteria', time: '3 days ago', type: 'info' },
+                { icon: '🌍', text: 'Diaspora portal now available', time: '1 week ago', type: 'info' }
+            ];
+            
+            const container = document.getElementById('recentActivity');
+            container.innerHTML = '';
+            
+            activities.forEach(activity => {
+                const colors = {
+                    success: 'bg-green-50 border-green-200',
+                    info: 'bg-blue-50 border-blue-200',
+                    warning: 'bg-orange-50 border-orange-200'
+                };
+                
+                const activityElement = document.createElement('div');
+                activityElement.className = `flex items-center space-x-3 p-3 rounded-lg border ${colors[activity.type]}`;
+                activityElement.innerHTML = `
+                    <div class="text-2xl">${activity.icon}</div>
+                    <div class="flex-1">
+                        <div class="font-medium text-gray-900">${activity.text}</div>
+                        <div class="text-sm text-gray-600">${activity.time}</div>
+                    </div>
+                `;
+                container.appendChild(activityElement);
+            });
+        }
+
+        function updateProgress() {
+            // Recalculate progress based on savings, credit score, etc.
+            const newProgress = Math.min(Math.floor(Math.random() * 30) + 20, 100);
+            document.getElementById('progressPercent').textContent = newProgress + '%';
+            
+            // Update progress bars
+            const progressBars = document.querySelectorAll('.progress-bar');
+            progressBars.forEach(bar => {
+                bar.style.width = newProgress + '%';
+            });
+        }
+
+        // Utility functions
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            const colors = {
+                success: 'bg-green-500',
+                warning: 'bg-orange-500',
+                error: 'bg-red-500',
+                info: 'bg-blue-500'
+            };
+            
+            notification.className = `fixed top-4 right-4 ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg z-50 slide-in max-w-sm`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        function changeLanguage(e) {
+            currentLanguage = e.target.value;
+            showNotification(`Language changed to ${e.target.options[e.target.selectedIndex].text}`, 'info');
+        }
+
+        function toggleVoice() {
+            voiceEnabled = !voiceEnabled;
+            const button = document.getElementById('voiceToggle');
+            button.textContent = voiceEnabled ? '🔊 Voice On' : '🎙️ Voice';
+            button.className = voiceEnabled ? 
+                'bg-green-500 hover:bg-green-600 px-3 py-1 rounded-lg text-sm transition-colors' :
+                'bg-white/20 hover:bg-white/30 px-3 py-1 rounded-lg text-sm transition-colors';
+            
+            if (voiceEnabled) {
+                showNotification('Voice assistance enabled for low-literacy support 🎙️', 'success');
+            }
+        }
+
+        // Language selection handler
+        document.addEventListener('DOMContentLoaded', function() {
+            const languageSelect = document.getElementById('languageSelect');
+            if (languageSelect) {
+                languageSelect.addEventListener('change', changeLanguage);
+            }
+            
+            const voiceToggle = document.getElementById('voiceToggle');
+            if (voiceToggle) {
+                voiceToggle.addEventListener('click', toggleVoice);
+            }
+            
+            const accessibilityToggle = document.getElementById('accessibilityToggle');
+            if (accessibilityToggle) {
+                accessibilityToggle.addEventListener('click', openAccessibilityModal);
+            }
+            
+            // Voice commands setup
+            if ('webkitSpeechRecognition' in window) {
+                speechRecognition = new webkitSpeechRecognition();
+                speechRecognition.continuous = false;
+                speechRecognition.interimResults = false;
+                speechRecognition.lang = 'en-GH';
+                
+                speechRecognition.onresult = function(event) {
+                    const command = event.results[0][0].transcript.toLowerCase();
+                    handleVoiceCommand(command);
+                };
+                
+                speechRecognition.onerror = function(event) {
+                    console.log('Speech recognition error:', event.error);
+                };
+            }
+        });
+
+        function handleVoiceCommand(command) {
+            if (command.includes('let\'s go') || command.includes('start')) {
+                startOnboarding();
+            } else if (command.includes('show credit score')) {
+                showSection('creditBuilder');
+            } else if (command.includes('track goal')) {
+                showSection('housingGoal');
+            } else if (command.includes('view voucher')) {
+                showSection('vouchers');
+            } else if (command.includes('redeem now')) {
+                redeemVoucher('mtn');
+            } else if (command.includes('show tips')) {
+                connectData();
+            } else {
+                speak('I didn\'t understand that command. Please try again or use the buttons.');
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97f0ac4553c2f816',t:'MTc1Nzg2MTE3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
